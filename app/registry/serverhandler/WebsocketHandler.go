@@ -1,11 +1,12 @@
 package serverhandler
 
 import (
+	"os"
+	"regexp"
+
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
-	"os"
-	"regexp"
 )
 
 type WebsocketHandler struct {
