@@ -1,8 +1,9 @@
 package jsonhttpresponse
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 //OK - Function to return Status OK Response (200)
@@ -55,4 +56,8 @@ func Conflict(c *gin.Context, payloads interface{}) {
 func Forbidden(c *gin.Context, payloads interface{}) {
 	c.JSON(http.StatusForbidden, payloads)
 	return
+}
+
+func StatusCreated(c *gin.Context, payload interface{}) {
+	c.JSON(http.StatusCreated, payload)
 }

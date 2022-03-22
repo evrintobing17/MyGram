@@ -109,7 +109,7 @@ func (uc *UC) generateUserJWTDriver(userId int) (token string, err error) {
 	return jwtToken, nil
 }
 
-func (uc *UC) Register(username, email, password string, age int) (driver *models.User, token string, err error) {
+func (uc *UC) Register(username, email, password string, age int) (driver *models.User, err error) {
 	//Cast ReqRegister to model.User
 	userModel := models.User{
 		Username: username,
@@ -118,53 +118,34 @@ func (uc *UC) Register(username, email, password string, age int) (driver *model
 		Age:      age,
 	}
 
-	//Default time for birthday
-	layout := "2006-01-02"
-	defaultDateInput := "2000-11-23"
-	defaultBirthday, _ := time.Parse(layout, defaultDateInput)
-	userModel.CreatedAt = &defaultBirthday
-
 	errUser := uc.isUserExist(userModel)
 	if errUser != nil {
 		if err == ErrEmailAlreadyExist {
-			return nil, "", ErrEmailAlreadyExist
+			return nil, ErrEmailAlreadyExist
 		}
 		if err == ErrPhoneAlreadyExist {
-			return nil, "", ErrPhoneAlreadyExist
+			return nil, ErrPhoneAlreadyExist
 		}
-		return nil, "", errUser
+		return nil, errUser
 	}
 
 	//Convert Plain password to bcrypt
 	hashedPassword, err := bcrypthelper.GenerateBcrypt(password)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	userModel.Password = hashedPassword
 
 	userData, errUser := uc.repo.Insert(userModel)
 	if errUser != nil {
-		return nil, "", errUser
+		return nil, errUser
 	}
 
-	//Create JWT
-	jwtExpirationDurationDayString := os.Getenv("jwt.expirationDurationDay")
-	var jwtExpirationDurationDay int
-	jwtExpirationDurationDay, err = strconv.Atoi(jwtExpirationDurationDayString)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
-	// Conversion to seconds
-	jwtExpiredAt := time.Now().Unix() + int64(jwtExpirationDurationDay*3600*24)
-
-	userClaims := jwthelper.AccessJWTClaims{Id: userData.ID, ExpiresAt: jwtExpiredAt}
-	jwtToken, err := jwthelper.NewWithClaims(userClaims)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return userData, jwtToken, nil
+	return userData, nil
 }
 
 func (uc *UC) DeleteUserByID(userId int) error {
@@ -176,6 +157,7 @@ func (uc *UC) DeleteUserByID(userId int) error {
 }
 
 func (uc *UC) UpdateUser(updateData map[string]interface{}) (*models.User, error) {
+	updateData["updated_at"] = time.Now()
 	userData, err := uc.repo.UpdatePartial(updateData)
 	if err != nil {
 		return nil, err

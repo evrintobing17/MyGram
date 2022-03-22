@@ -59,10 +59,6 @@ func NewHTTPHandler(adress string) *HttpHandler {
 	//Maximum memory limit for Multipart forms
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
-	r.LoadHTMLGlob("resources/views/**/*")
-
-	r.Static("/assets/images", "./assets/images")
-
 	return &HttpHandler{r, adress}
 }
 

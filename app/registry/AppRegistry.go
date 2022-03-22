@@ -7,7 +7,6 @@ import (
 	usersrepository "github.com/evrintobing17/MyGram/app/modules/users/repository"
 	usersusecase "github.com/evrintobing17/MyGram/app/modules/users/usecase"
 
-	"fmt"
 	"os"
 	"strconv"
 
@@ -100,13 +99,6 @@ func NewAppRegistry() *AppRegistry {
 
 //init will initialize all the needed component for Go
 func (registry *AppRegistry) initializeAppRegistry() {
-
-	appASCIIArt := `
-Bogadelivery Backend Service
-2020 by Chrombit Digital
-`
-
-	fmt.Println(appASCIIArt)
 
 	//Initialize Logger
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
