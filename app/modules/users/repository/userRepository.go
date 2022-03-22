@@ -50,6 +50,17 @@ func (r *repo) GetByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
+//Get user data by email
+func (r *repo) GetByID(id int) (*models.User, error) {
+	var user *models.User
+
+	db := r.db.First(&user, "id = ?", id)
+	if db.Error != nil {
+		return nil, db.Error
+	}
+	return user, nil
+}
+
 // func (r *repo) Update(user *models.User) (*models.User, error){
 
 // }

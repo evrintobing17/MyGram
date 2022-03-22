@@ -118,11 +118,11 @@ func (uc *UC) Register(username, email, password string, age int) (driver *model
 		Age:      age,
 	}
 
-	// //Default time for birthday
-	// layout := "2006-01-02"
-	// defaultDateInput := "2000-11-23"
-	// defaultBirthday, _ := time.Parse(layout, defaultDateInput)
-	// userModel.BirthDay = &defaultBirthday
+	//Default time for birthday
+	layout := "2006-01-02"
+	defaultDateInput := "2000-11-23"
+	defaultBirthday, _ := time.Parse(layout, defaultDateInput)
+	userModel.CreatedAt = &defaultBirthday
 
 	errUser := uc.isUserExist(userModel)
 	if errUser != nil {
@@ -165,6 +165,22 @@ func (uc *UC) Register(username, email, password string, age int) (driver *model
 	}
 
 	return userData, jwtToken, nil
+}
+
+func (uc *UC) DeleteUserByID(userId int) error {
+	err := uc.repo.Delete(userId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (uc *UC) UpdateUser(updateData map[string]interface{}) (*models.User, error) {
+	userData, err := uc.repo.UpdatePartial(updateData)
+	if err != nil {
+		return nil, err
+	}
+	return userData, nil
 }
 
 func (uc *UC) isUserExist(user models.User) error {

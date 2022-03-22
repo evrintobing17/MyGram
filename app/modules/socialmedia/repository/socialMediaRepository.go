@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/evrintobing17/MyGram/app/models"
-	"github.com/evrintobing17/MyGram/app/modules/social_media"
+	"github.com/evrintobing17/MyGram/app/modules/socialmedia"
 	"github.com/jinzhu/gorm"
 )
 
