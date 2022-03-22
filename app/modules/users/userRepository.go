@@ -1,11 +1,12 @@
-package user
+package users
 
 import "github.com/evrintobing17/MyGram/app/models"
 
 type UserRepository interface {
-	Insert(User *models.User) (*models.User, error)
-	GetByEmail(email string) *models.User
-	Update(user *models.User) (*models.User, error)
-	UpdatePartial(updateData map[string]interface{}) (*models.User, error)
+	Insert(user models.User) (*models.User, error)
 	Delete(userId int) error
+	GetByEmail(email string) (*models.User, error)
+	UpdatePartial(updateData map[string]interface{}) (*models.User, error)
+	ExistByUsername(username string) (bool, error)
+	ExistByEmail(email string) (bool, error)
 }
