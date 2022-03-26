@@ -40,14 +40,14 @@ func (r *repo) Delete(photoId int) error {
 }
 
 //Get photo data by email
-func (r *repo) GetByID(photoId int) (*models.Photos, error) {
-	var photo *models.Photos
+func (r *repo) GetByUserID(photoId int) (*models.Photos, error) {
+	var photo models.Photos
 
-	db := r.db.First(&photo, "id = ?", photoId)
+	db := r.db.Find(&photo, "id = ?", photoId)
 	if db.Error != nil {
 		return nil, db.Error
 	}
-	return photo, nil
+	return &photo, nil
 }
 
 func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.Photos, error) {
@@ -56,13 +56,13 @@ func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.Photos,
 		return nil, errors.New("field if cannot be empty")
 	}
 	idString := fmt.Sprintf("%v", id)
-	driverID, err := strconv.Atoi(idString)
+	photoID, err := strconv.Atoi(idString)
 	if err != nil {
 		return nil, err
 	}
 
 	var existingPhotos models.Photos
-	db := r.db.First(&existingPhotos, "id=?", driverID)
+	db := r.db.First(&existingPhotos, "id=?", photoID)
 	if db.Error != nil {
 		return nil, db.Error
 	}
@@ -73,4 +73,24 @@ func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.Photos,
 	}
 
 	return &existingPhotos, nil
+}
+
+func (r *repo) GetAllByUserID(userId int) (*[]models.Photos, error) {
+	var photo []models.Photos
+
+	db := r.db.Find(&photo, "user_id = ?", userId)
+	if db.Error != nil {
+		return nil, db.Error
+	}
+	return &photo, nil
+}
+
+func (r *repo) CheckIfUserIDExists(photoId, userID int) error {
+	var photo models.Photos
+	db := r.db.Find(&photo, "id = ? and user_id =?", photoId, userID)
+	fmt.Println(&photo)
+	if db.Error != nil {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
 }

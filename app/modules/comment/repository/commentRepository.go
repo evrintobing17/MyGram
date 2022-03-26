@@ -40,14 +40,14 @@ func (r *repo) Delete(commentsId int) error {
 }
 
 //Get comments data by id
-func (r *repo) GetByID(commentId int) (*models.Comments, error) {
-	var comments *models.Comments
+func (r *repo) GetAllById(userId int) (*[]models.Comments, error) {
+	var comments []models.Comments
 
-	db := r.db.First(&comments, "id = ?", commentId)
+	db := r.db.Find(&comments, "user_id = ?", userId)
 	if db.Error != nil {
 		return nil, db.Error
 	}
-	return comments, nil
+	return &comments, nil
 }
 
 func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.Comments, error) {
@@ -73,4 +73,14 @@ func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.Comment
 	}
 
 	return &existingComments, nil
+}
+
+func (r *repo) CheckIfUserIDExists(commentId, userID int) error {
+	var comment models.Comments
+	db := r.db.Find(&comment, "id = ? and user_id =?", commentId, userID)
+	fmt.Println(&comment)
+	if db.Error != nil {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
 }

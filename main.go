@@ -15,6 +15,14 @@ import (
 	usersauthdelivery "github.com/evrintobing17/MyGram/app/modules/users/delivery"
 	usersrepository "github.com/evrintobing17/MyGram/app/modules/users/repository"
 	usersusecase "github.com/evrintobing17/MyGram/app/modules/users/usecase"
+
+	photodelivery "github.com/evrintobing17/MyGram/app/modules/photo/delivery"
+	photorepository "github.com/evrintobing17/MyGram/app/modules/photo/repository"
+	photousecase "github.com/evrintobing17/MyGram/app/modules/photo/usecase"
+
+	commentdelivery "github.com/evrintobing17/MyGram/app/modules/comment/delivery"
+	commentrepository "github.com/evrintobing17/MyGram/app/modules/comment/repository"
+	commentusecase "github.com/evrintobing17/MyGram/app/modules/comment/usecase"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -75,15 +83,21 @@ func run() {
 
 	//Repository
 	usersRepository := usersrepository.NewUserRepository(DB)
+	photoRepository := photorepository.NewPhotosRepository(DB)
+	commentRepo := commentrepository.NewCommentsRepository(DB)
 
 	//Usecase
 	usersUsecase := usersusecase.NewUserUsecase(usersRepository)
+	photoUsecase := photousecase.NewPhotoUsecase(photoRepository)
+	commentUC := commentusecase.NewCommentUsecase(commentRepo, photoRepository)
 
 	//Middleware
 	authMiddleware := authmiddleware.NewAuthMiddleware(usersRepository)
 
 	//Presenter
 	usersauthdelivery.NewAuthHTTPHandler(r, usersUsecase, authMiddleware)
+	photodelivery.NewPhotoHTTPHandler(r, photoUsecase, authMiddleware)
+	commentdelivery.NewcommentHTTPHandler(r, commentUC, authMiddleware)
 
 	fmt.Println("Listening to port 8081")
 	log.Fatal(http.ListenAndServe("localhost:8081", r))

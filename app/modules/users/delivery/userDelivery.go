@@ -68,7 +68,6 @@ func (handler *userHandler) login(c *gin.Context) {
 		Jwt: jwt,
 	}
 	jsonhttpresponse.OK(c, response)
-	return
 }
 
 func (handler *userHandler) register(c *gin.Context) {
@@ -114,7 +113,6 @@ func (handler *userHandler) register(c *gin.Context) {
 	}
 
 	jsonhttpresponse.StatusCreated(c, response)
-	return
 }
 
 func (handler *userHandler) updateUser(c *gin.Context) {
@@ -161,7 +159,6 @@ func (handler *userHandler) updateUser(c *gin.Context) {
 	}
 
 	jsonhttpresponse.OK(c, resp)
-	return
 }
 
 func (handler *userHandler) deleteUser(c *gin.Context) {
@@ -182,5 +179,4 @@ func (handler *userHandler) deleteUser(c *gin.Context) {
 	}
 
 	jsonhttpresponse.OK(c, resp)
-	return
 }

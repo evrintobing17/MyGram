@@ -61,7 +61,6 @@ func (r *repo) GetByID(id int) (*models.User, error) {
 	return &user, nil
 }
 
-
 func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.User, error) {
 	id := updateData["id"]
 	if id == nil {
