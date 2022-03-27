@@ -49,7 +49,7 @@ func (uc *UC) AddPhoto(title, caption, url string, userId int) (*models.Photos, 
 	return data, nil
 }
 
-func (uc *UC) GetPhoto(userID int, username, emai string) (interface{}, error) {
+func (uc *UC) GetPhoto(userID int, username, email string) (interface{}, error) {
 	var resp []GetPhotoResp
 	data, err := uc.repo.GetAllByUserID(userID)
 	if err != nil {
@@ -67,7 +67,7 @@ func (uc *UC) GetPhoto(userID int, username, emai string) (interface{}, error) {
 			UpdatedAt: photo.UpdatedAt,
 			User: User{
 				Username: username,
-				Email:    emai,
+				Email:    email,
 			},
 		})
 

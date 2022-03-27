@@ -45,6 +45,7 @@ require (
 require (
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/logger v0.0.2
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/swaggo/gin-swagger v1.4.1
 	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064

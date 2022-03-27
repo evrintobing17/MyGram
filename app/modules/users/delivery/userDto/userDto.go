@@ -3,10 +3,10 @@ package userdto
 import "time"
 
 type Register struct {
-	Age      int    `json:"age"`
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Age      int    `json:"age" binding:"required,min=8"`
+	Email    string `json:"email" binding:"required,email"`
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required,gte=6"`
 }
 
 type ResRegister struct {
@@ -17,8 +17,8 @@ type ResRegister struct {
 }
 
 type ReqLogin struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required,gte=6"`
 }
 
 type ResLogin struct {
@@ -26,8 +26,8 @@ type ResLogin struct {
 }
 
 type ReqUpdate struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
+	Email    string `json:"email" binding:"required"`
+	Username string `json:"username" binding:"required"`
 }
 
 type RespUpdate struct {

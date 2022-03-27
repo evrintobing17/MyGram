@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/evrintobing17/MyGram/app/models"
@@ -21,6 +20,7 @@ type GetCommentResp struct {
 }
 
 type User struct {
+	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
@@ -69,7 +69,6 @@ func (uc *UC) GetComment(userID int, username, email string) (interface{}, error
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("data penting", data)
 
 	for _, comment := range *data {
 		dataPhoto, err := uc.photoRepo.GetByUserID(comment.PhotosID)
@@ -80,10 +79,11 @@ func (uc *UC) GetComment(userID int, username, email string) (interface{}, error
 			ID:        comment.ID,
 			Message:   comment.Message,
 			PhotoID:   comment.PhotosID,
-			UserID:    userID,
+			UserID:    comment.UserID,
 			UpdatedAt: comment.UpdatedAt,
 			CreatedAt: comment.CreatedAt,
 			User: User{
+				ID:       userID,
 				Username: username,
 				Email:    email,
 			},

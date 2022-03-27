@@ -88,7 +88,6 @@ func (r *repo) GetAllByUserID(userId int) (*[]models.Photos, error) {
 func (r *repo) CheckIfUserIDExists(photoId, userID int) error {
 	var photo models.Photos
 	db := r.db.Find(&photo, "id = ? and user_id =?", photoId, userID)
-	fmt.Println(&photo)
 	if db.Error != nil {
 		return gorm.ErrRecordNotFound
 	}

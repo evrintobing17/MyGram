@@ -40,14 +40,14 @@ func (r *repo) Delete(socialMediaId int) error {
 }
 
 //Get SocialMedia data by email
-func (r *repo) GetByID(socialMediaID int) (*models.SocialMedia, error) {
-	var SocialMedia *models.SocialMedia
+func (r *repo) GetByUserID(socialMediaID int) (*[]models.SocialMedia, error) {
+	var SocialMedia []models.SocialMedia
 
-	db := r.db.First(&SocialMedia, "id = ?", socialMediaID)
+	db := r.db.Find(&SocialMedia, "user_id = ?", socialMediaID)
 	if db.Error != nil {
 		return nil, db.Error
 	}
-	return SocialMedia, nil
+	return &SocialMedia, nil
 }
 
 func (r *repo) UpdatePartial(updateData map[string]interface{}) (*models.SocialMedia, error) {
@@ -90,4 +90,13 @@ func (r *repo) ExistByEmail(email string) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func (r *repo) CheckIfUserIDExists(photoId, userID int) error {
+	var socialMedia models.SocialMedia
+	db := r.db.Find(&socialMedia, "id = ? and user_id =?", photoId, userID)
+	if db.Error != nil {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
 }

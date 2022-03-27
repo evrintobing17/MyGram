@@ -3,9 +3,9 @@ package delivery
 import "time"
 
 type InsertReq struct {
-	Title    string `json:"title"`
+	Title    string `json:"title" binding:"required"`
 	Caption  string `json:"caption"`
-	PhotoUrl string `json:"photo_url"`
+	PhotoUrl string `json:"photo_url" binding:"required"`
 }
 
 type InsertResp struct {
@@ -17,26 +17,10 @@ type InsertResp struct {
 	CreatedAt *time.Time `json:"created_at"`
 }
 
-type PhotoResp struct {
-	ID        int        `json:"id"`
-	Title     string     `json:"title"`
-	Caption   string     `json:"caption"`
-	PhotoUrl  string     `json:"photo_url"`
-	UserID    int        `json:"user_id"`
-	CreatedAt *time.Time `json:"created_at"`
-	UpdatedAt *time.Time `json:"update_at"`
-	User
-}
-
-type User struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-}
-
 type UpdateRequest struct {
-	Title    string `json:"title"`
+	Title    string `json:"title" binding:"required"`
 	Caption  string `json:"caption"`
-	PhotoUrl string `json:"photo_url"`
+	PhotoUrl string `json:"photo_url" binding:"required"`
 }
 
 type UpdateResponse struct {
