@@ -31,6 +31,22 @@ func NewcommentHTTPHandler(r *gin.Engine, commentUC comment.CommentUsecase, auth
 	}
 }
 
+// Add Comment godoc
+// @Summary  Add Comment
+// @ID addComment
+// @Description add comment for mygram. Return comment model
+// @Description add comment data
+// @Tags Comment
+// @Accept  json
+// @Produce  json
+// @Param access-token header string true "Bearer Token"
+// @Params authinfo body InsertReq true "add comment data"
+// @Success 200 {object} InsertResp
+// @Failure 400 {object} string
+// @Failure 401 {object} string
+// @Failure 500 {object} string
+// @Security JWTToken
+// @Router /comment [post]
 func (handler *commentHandler) addComment(c *gin.Context) {
 	var request InsertReq
 
@@ -71,6 +87,21 @@ func (handler *commentHandler) addComment(c *gin.Context) {
 
 }
 
+// Get Comment godoc
+// @Summary  Get Comment
+// @ID getComment
+// @Description get comment for mygram. Return comment model
+// @Description get comment data
+// @Tags Comment
+// @Accept  json
+// @Produce  json
+// @Param access-token header string true "Bearer Token"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} string
+// @Failure 401 {object} string
+// @Failure 500 {object} string
+// @Security JWTToken
+// @Router /comment [get]
 func (handler *commentHandler) getComment(c *gin.Context) {
 	userAuth, err := routehelper.GetUserFromJWTContext(c)
 	if err != nil {
@@ -86,6 +117,23 @@ func (handler *commentHandler) getComment(c *gin.Context) {
 	jsonhttpresponse.OK(c, getcomment)
 }
 
+// Update Comment godoc
+// @Summary  Update Comment
+// @ID updateComment
+// @Description update data comment for mygram. Return comment model
+// @Description update comment data
+// @Tags Comment
+// @Accept  json
+// @Produce  json
+// @Param access-token header string true "Bearer Token"
+// @Params authinfo body UpdateRequest true "add comment data"
+// @Param id path integer true "commentId"
+// @Success 200 {object} UpdateResponse
+// @Failure 400 {object} string
+// @Failure 401 {object} string
+// @Failure 500 {object} string
+// @Security JWTToken
+// @Router /comment/{commentId} [put]
 func (handler *commentHandler) updateComment(c *gin.Context) {
 	commentId := c.Param("commentId")
 
@@ -135,6 +183,22 @@ func (handler *commentHandler) updateComment(c *gin.Context) {
 	jsonhttpresponse.OK(c, resp)
 }
 
+// Delete Comment godoc
+// @Summary  Delete Comment
+// @ID deleteComment
+// @Description delete data comment for mygram. Return comment model
+// @Description delete comment data
+// @Tags Comment
+// @Accept  json
+// @Produce  json
+// @Param access-token header string true "Bearer Token"
+// @Param id path integer true "commentId"
+// @Success 200 {object} DeleteResp
+// @Failure 400 {object} string
+// @Failure 401 {object} string
+// @Failure 500 {object} string
+// @Security JWTToken
+// @Router /comment/{commentId} [delete]
 func (handler *commentHandler) deleteComment(c *gin.Context) {
 	commentId := c.Param("commentId")
 
