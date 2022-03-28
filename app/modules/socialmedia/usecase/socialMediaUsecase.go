@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/evrintobing17/MyGram/app/models"
+	"github.com/evrintobing17/MyGram/app/modules/photo"
 	"github.com/evrintobing17/MyGram/app/modules/socialmedia"
 )
 
@@ -22,18 +23,20 @@ type GetSocialMediaResp struct {
 }
 
 type User struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ID              int    `json:"id"`
+	Username        string `json:"username"`
+	ProfileImageUrl string `json:"profile_image_url"`
 }
 
 type UC struct {
 	socialMediaRepo socialmedia.SocialMediaRepository
+	photoRepo       photo.PhotosRepository
 }
 
-func NewsocialMediaUsecase(socialMediaRepo socialmedia.SocialMediaRepository) socialmedia.SocialMediaUsecase {
+func NewsocialMediaUsecase(socialMediaRepo socialmedia.SocialMediaRepository, photoRepo photo.PhotosRepository) socialmedia.SocialMediaUsecase {
 	return &UC{
 		socialMediaRepo: socialMediaRepo,
+		photoRepo:       photoRepo,
 	}
 }
 
@@ -51,9 +54,14 @@ func (uc *UC) AddSocialMedia(name, url string, userId int) (*models.SocialMedia,
 
 	return data, nil
 }
-func (uc *UC) GetSocialMedia(userId int, username, email string) (interface{}, error) {
+func (uc *UC) GetSocialMedia(userId int, username string) (interface{}, error) {
 	var resp []GetSocialMediaResp
 	data, err := uc.socialMediaRepo.GetByUserID(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	dataPhoto, err := uc.photoRepo.GetByUserID(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -67,9 +75,9 @@ func (uc *UC) GetSocialMedia(userId int, username, email string) (interface{}, e
 			CreatedAt:      socialMedia.CreatedAt,
 			UpdatedAt:      socialMedia.UpdatedAt,
 			User: User{
-				ID:       userId,
-				Username: username,
-				Email:    email,
+				ID:              userId,
+				Username:        username,
+				ProfileImageUrl: dataPhoto.PhotoUrl,
 			},
 		})
 

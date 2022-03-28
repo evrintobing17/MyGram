@@ -39,7 +39,7 @@ func (handler *socialMediaHandler) getSocialMedia(c *gin.Context) {
 		return
 	}
 
-	getcomment, err := handler.socialMediaUC.GetSocialMedia(userAuth.ID, userAuth.Username, userAuth.Email)
+	getcomment, err := handler.socialMediaUC.GetSocialMedia(userAuth.ID, userAuth.Username)
 	if err != nil {
 		jsonhttpresponse.BadRequest(c, err)
 		return
