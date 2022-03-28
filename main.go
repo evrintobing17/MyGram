@@ -96,7 +96,7 @@ func run() {
 	usersUsecase := usersusecase.NewUserUsecase(usersRepository)
 	photoUsecase := photousecase.NewPhotoUsecase(photoRepository)
 	commentUC := commentusecase.NewCommentUsecase(commentRepo, photoRepository)
-	socialMediaUseCase := socialmediausecase.NewsocialMediaUsecase(socialMediaRepo)
+	socialMediaUseCase := socialmediausecase.NewsocialMediaUsecase(socialMediaRepo, photoRepository)
 
 	//Middleware
 	authMiddleware := authmiddleware.NewAuthMiddleware(usersRepository)
