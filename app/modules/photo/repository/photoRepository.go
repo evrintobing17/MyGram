@@ -42,8 +42,7 @@ func (r *repo) Delete(photoId int) error {
 //Get photo data by email
 func (r *repo) GetByUserID(photoId int) (*models.Photos, error) {
 	var photo models.Photos
-	fmt.Println(photoId)
-	db := r.db.Find(&photo, "user_id = ?", photoId)
+	db := r.db.First(&photo, "user_id = ?", photoId)
 	if db.Error != nil {
 		return nil, db.Error
 	}
